@@ -1,12 +1,18 @@
 """
 In this module we create requests for accessing and updating the book inventory
 """
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 from flask_cors import CORS
 from book_storage import *
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+
+
+@app.before_request
+def before_request():
+    g.db = connect_to_db()
 
 
 @app.route("/api/books", methods=["GET"])

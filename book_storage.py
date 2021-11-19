@@ -45,7 +45,7 @@ def create_db_table():
         conn.close()
 
 
-def insert_book(book):
+def insert_book(book, db="database.db"):
     """
     Inserting new book to the database
     :param book: dict
@@ -53,7 +53,7 @@ def insert_book(book):
     """
     inserted_book = {}
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(db)
         cur = conn.cursor()
         cur.execute(
             "INSERT INTO books (author, title, published_date) VALUES (?, ?, ?)",
@@ -70,13 +70,13 @@ def insert_book(book):
     return inserted_book
 
 
-def get_books():
+def get_books(db="database.db"):
     """
     Get list of all books stored in the database
     :return: list of books
     """
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(db)
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         cur.execute("SELECT * FROM books")
@@ -92,14 +92,14 @@ def get_books():
     return books
 
 
-def get_book_by_id(id):
+def get_book_by_id(id, db="database.db"):
     """
     Get book by id from the database
     :param id: int
     :return: book
     """
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(db)
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         cur.execute("SELECT * FROM books WHERE id = ?", (id,))
@@ -112,14 +112,14 @@ def get_book_by_id(id):
     return book
 
 
-def update_book(book):
+def update_book(book, db="database.db"):
     """
     Updating existing book data
     :param book: dict
     :return: updated book data
     """
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(db)
         cur = conn.cursor()
         cur.execute(
             "UPDATE books SET author = ?, title = ?, published_date = ? WHERE id =?",
@@ -143,7 +143,7 @@ def update_book(book):
     return updated_book
 
 
-def delete_book(id):
+def delete_book(id, db="database.db"):
     """
     Deleting book by id
     :param id: int
@@ -151,7 +151,7 @@ def delete_book(id):
     """
     message = {}
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(db)
         conn.execute("DELETE from books WHERE id = ?", (id,))
         conn.commit()
         message["status"] = "Book deleted successfully"
