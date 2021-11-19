@@ -2,6 +2,9 @@
 RESTful Python service to manage book storage. Using SQLite3 as a database and Flask to build the service.
 To run the service run
 
+
+`pip install -r requirements.txt`
+
 `python app.py`
 
 
